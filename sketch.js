@@ -35,6 +35,23 @@ function setup() {
 
 
     if(!inpcreated){
+
+      rotateRedClock=createButton("Click to rotate red bot clockwise")
+      rotateBlueClock=createButton("Click to rotate blue bot clockwise")
+      rotateRedAntiClock=createButton("Click to rotate red bot anti-clockwise")
+      rotateBlueAntiClock=createButton("Click to rotate blue bot anti-clockwise")
+
+      rotateRedClock.position(70,260)
+      rotateRedAntiClock.position(70,290)
+      rotateBlueClock.position(70,340)
+      rotateBlueAntiClock.position(70,370)
+
+      rotateRedClock.mousePressed(rotateRC)
+      rotateBlueClock.mousePressed(rotateBC)
+
+      rotateRedAntiClock.mousePressed(rotateRAC)
+      rotateBlueAntiClock.mousePressed(rotateBAC)
+
       button = createButton('click to reload state of game')
       button.position(70,200)
       button.mousePressed(setup);
@@ -369,4 +386,60 @@ function myInputEvent() {
 
 function isNumeric(num){
   return !isNaN(num)
+}
+
+function rotateRC(){
+  bot0.rotateClock()
+  reDraw()
+}
+
+function rotateBC(){
+  bot1.rotateClock()
+  reDraw()
+}
+
+function rotateRAC(){
+  bot0.rotateAntiClock()
+  reDraw()
+}
+
+function rotateBAC(){
+  bot1.rotateAntiClock()
+  reDraw()
+}
+
+function reDraw(){
+  canvas=createCanvas(750, 700);
+  canvas.position((windowWidth-750)/2,135)
+  background(255)
+  rectMode(CORNER)
+  fill(80)
+  rect(0,0,width,height-200)
+
+  p01=bot0.sense(bot1)
+  p10=bot1.sense(bot0)
+  if(p01.length==0){
+    p01=bot0.senseEdges()
+    bot0text="The distance of red bot from nearest edge is "+str(dist(bot1.x,bot1.y,bot0.x,bot0.y))+" (no enemy was detected)"
+  }else{
+    bot0text="The distance of red bot from enemy (C2C) is "+str(dist(bot1.x,bot1.y,bot0.x,bot0.y))
+  }
+  if(p10.length==0){
+    p10=bot1.senseEdges()
+    bot1text="The distance of blue bot from nearest edge is "+str(dist(bot1.x,bot1.y,bot0.x,bot0.y))+" (no enemy was detected)"
+  }else{
+    bot1text="The distance of blue bot from enemy (C2C) is "+str(dist(bot1.x,bot1.y,bot0.x,bot0.y))
+  }
+  bot0.createLine(p01)
+  bot1.createLine(p10)
+  // bot0.createLine([])
+  // bot1.createLine([])
+  bot0.show(255,0,0)
+  bot1.show(0,0,255)
+
+  p0=createP(bot0text)
+  p1=createP(bot1text)
+
+  p0.position((windowWidth-750)/2+30,630)
+  p1.position((windowWidth-750)/2+30,650)
 }
