@@ -26,7 +26,7 @@ function setup() {
     // 800 x 400 (double width to make room for each "sub-canvas")
 
     canvas=createCanvas(750, 700);
-    canvas.position((windowWidth-750)/2,135)
+    canvas.position(400,135)
     background(255)
     rectMode(CORNER)
     fill(80)
@@ -84,13 +84,13 @@ function setup() {
       p01=bot0.senseEdges()
       bot0text="The distance of red bot from nearest edge is "+str(dist(p01[0],p01[1],bot0.x,bot0.y)+" (no enemy was detected)")
     }else{
-      bot0text="The distance of red bot from enemy (C2C) is "+str(dist(p01[0],p01[1],bot0.x,bot0.y))
+      bot0text="The distance of red bot from enemy (C2C) is "+str(dist(bot1.x,bot1.y,bot0.x,bot0.y))
     }
     if(p10.length==0){
       p10=bot1.senseEdges()
       bot1text="The distance of blue bot from nearest edge is "+str(dist(p10[0],p10[1],bot1.x,bot1.y)+" (no enemy was detected)")
     }else{
-      bot1text="The distance of blue bot from enemy (C2C) is "+str(dist(p10[0],p10[1],bot1.x,bot1.y))
+      bot1text="The distance of blue bot from enemy (C2C) is "+str(dist(bot0.x,bot0.y,bot1.x,bot1.y))
     }
 		bot0.createLine(p01)
 		bot1.createLine(p10)
@@ -201,7 +201,7 @@ class Bot{
   rotateAntiClock(){
     this.theta+=pi/18
     if(this.theta>pi){
-      this.theta=2*pi-this.theta
+      this.theta=this.theta-2*pi
     }
   }
 	sense(bot){
@@ -410,7 +410,7 @@ function rotateBAC(){
 
 function reDraw(){
   canvas=createCanvas(750, 700);
-  canvas.position((windowWidth-750)/2,135)
+  canvas.position(400,135)
   background(255)
   rectMode(CORNER)
   fill(80)
@@ -420,15 +420,15 @@ function reDraw(){
   p10=bot1.sense(bot0)
   if(p01.length==0){
     p01=bot0.senseEdges()
-    bot0text="The distance of red bot from nearest edge is "+str(dist(bot1.x,bot1.y,bot0.x,bot0.y))+" (no enemy was detected)"
+    bot0text="The distance of red bot from nearest edge is "+str(dist(p01[0],p01[1],bot0.x,bot0.y)+" (no enemy was detected)")
   }else{
     bot0text="The distance of red bot from enemy (C2C) is "+str(dist(bot1.x,bot1.y,bot0.x,bot0.y))
   }
   if(p10.length==0){
     p10=bot1.senseEdges()
-    bot1text="The distance of blue bot from nearest edge is "+str(dist(bot1.x,bot1.y,bot0.x,bot0.y))+" (no enemy was detected)"
+    bot1text="The distance of blue bot from nearest edge is "+str(dist(p10[0],p10[1],bot1.x,bot1.y)+" (no enemy was detected)")
   }else{
-    bot1text="The distance of blue bot from enemy (C2C) is "+str(dist(bot1.x,bot1.y,bot0.x,bot0.y))
+    bot1text="The distance of blue bot from enemy (C2C) is "+str(dist(bot0.x,bot0.y,bot1.x,bot1.y))
   }
   bot0.createLine(p01)
   bot1.createLine(p10)
